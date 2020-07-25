@@ -24,7 +24,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew compileTest --info
       - name: Run Tests with Gradle
-        run: ./gradlew test -Dbrowser=chrome # Run our tests using Gradle
+        run: ./gradlew test --info -Dbrowser=chrome # Run our tests using Gradle
 
   FireFoxTest:
     runs-on: ubuntu-latest # Using linux machine
@@ -45,4 +45,4 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew compileTest --info
       - name: Run Tests with Gradle
-        run: ./gradlew test -Dbrowser=firefox # Run our tests using Gradle
+        run: ./gradlew test --info -Dbrowser=firefox # Run our tests using Gradle
