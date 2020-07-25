@@ -1,5 +1,6 @@
 package base;
 
+import com.github.javafaker.Faker;
 import com.google.common.io.Files;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.OutputType;
@@ -15,12 +16,14 @@ import pages.HomePage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import org.apache.log4j.BasicConfigurator;
 
 public class BaseTest {
     private WebDriver driver;
     protected HomePage homePage;
+    protected Faker faker = new Faker(new Locale("de"));
 
     private void setUpFirefox(){
         WebDriverManager.firefoxdriver().setup();
