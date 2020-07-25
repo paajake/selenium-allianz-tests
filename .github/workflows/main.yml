@@ -22,7 +22,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew # give permission to Gradle to run the commands
       - name: Build with Gradle
-        run: ./gradlew build --info -Dbrowser=chrome
+        run: ./gradlew compileTest --info
       - name: Run Tests with Gradle
         run: ./gradlew test --info -Dbrowser=chrome # Run our tests using Gradle
 
@@ -43,6 +43,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew # give permission to Gradle to run the commands
       - name: Build with Gradle
-        run: ./gradlew build --info -Dbrowser=firefox
+        run: ./gradlew compileTest --info
       - name: Run Tests with Gradle
         run: ./gradlew test --info -Dbrowser=firefox # Run our tests using Gradle
