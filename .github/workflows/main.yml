@@ -1,0 +1,44 @@
+name: Selenium Java CI
+
+on: [push]
+
+jobs:
+  ChromeTest:
+    runs-on: ubuntu-latest # Using linux machine
+    strategy:
+      matrix:
+        java: [ 8, 9, 11]
+    name: Java ${{ matrix.java }}
+    steps:
+      - uses: actions/checkout@v2 # Checkout the code
+      - name: Set up JDK
+        uses: actions/setup-java@v1 # Setup JAVA
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Install Google Chrome # Using shell script to install Google Chrome
+        run: |
+          chmod +x ./resources/scripts/InstallChrome.sh
+           ./resources/scripts/InstallChrome.sh
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew # give permission to Gradle to run the commands
+      - name: Build with Gradle
+        run: ./gradlew test --info -Dbrowser=chrome # Run our tests using Gradle
+
+  FireFoxTest:
+    runs-on: ubuntu-latest # Using linux machine
+    strategy:
+      matrix:
+        java: [ 8, 9, 11]
+    name: Java ${{ matrix.java }}
+    steps:
+      - uses: actions/checkout@v2 # Checkout the code
+      - name: Set up JDK
+        uses: actions/setup-java@v1 # Setup JAVA
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Install Firefox
+        run: apt install firefox
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew # give permission to Gradle to run the commands
+      - name: Build with Gradle
+        run: ./gradlew test --info -Dbrowser=firefox # Run our tests using Gradle
