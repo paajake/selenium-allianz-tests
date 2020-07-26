@@ -80,6 +80,9 @@ public class BaseTest {
             e.printStackTrace();
         }
     }
+    protected String getCurrentUrl(){
+        return driver.getCurrentUrl();
+    }
 
     private void setupLogger(){
         Logger.getRootLogger().setLevel(Level.INFO);

@@ -4,8 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 
 public class HomePage {
     private final WebDriver driver;
@@ -51,25 +52,37 @@ public class HomePage {
         driver.findElement(zipCodeField).sendKeys(zip);
     }
 
-    private Select findHabitationDropdownElement(){
-        return new Select(driver.findElement(habitationDropdownField));
+    private WebElement findHabitationDropdownElement(){
+          return driver.findElement(By.className("nx-dropdown__panel-body"));
     }
 
-    public void setHabitationDropdownField(int habitationStatus){
-        Select habitationDropdown = findHabitationDropdownElement();
-        habitationDropdown.selectByIndex(habitationStatus);
+    private void clickHabitationDropdownField (){
+         driver.findElement(habitationDropdownField).click();
     }
 
-    public String getSelectedHabitationOption(){
-        WebElement selectedElement = findHabitationDropdownElement().getFirstSelectedOption();
-        return selectedElement.getText();
+    private String clickHabitationItemByIndex(int index){
+        List<WebElement> dropDownElements = findHabitationDropdownElement()
+                                            .findElements(By.cssSelector("nx-dropdown-item[role='option']"));
+
+        dropDownElements.get(index).click();
+        return getSelectedHabitationOptionText();
     }
 
-    public void clickCalculateTariffButton(){
+    public String setHabitationDropdownField(int habitationStatus){
+        clickHabitationDropdownField();
+        return  clickHabitationItemByIndex(habitationStatus);
+    }
+
+    public String getSelectedHabitationOptionText(){
+        return driver.findElement(By.cssSelector("nx-dropdown span.ng-star-inserted")).getText();
+    }
+
+    public OffersPage clickCalculateTariffButton(){
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(calculateTariffButton)));
 
         driver.findElement(calculateTariffButton).click();
+        return new OffersPage(driver);
     }
 
     public String getZipCode(int index){
