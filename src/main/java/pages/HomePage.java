@@ -21,7 +21,7 @@ public class HomePage {
 
     private HomePage(WebDriver driver){
         this.driver = driver;
-        clickPrivacyCookiesAcceptButton();
+//        clickPrivacyCookiesAcceptButton();
     }
 
     public static HomePage getInstance(WebDriver driver) {
