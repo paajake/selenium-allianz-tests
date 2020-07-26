@@ -29,7 +29,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: selenium-allianz-ch-test-results
+          name: ch-results-java-${{ matrix.java }}
           path: |
             ./build/reports
             ./build/test-results
@@ -60,7 +60,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: selenium-allianz-ff-test-results
+          name: ff-results-java-${{ matrix.java }}
           path: |
             ./build/reports
             ./build/test-results
