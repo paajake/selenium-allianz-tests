@@ -29,11 +29,11 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: uploading...
+          name: selenium-allianz-ch-test-results
           path: |
-            ./build/reports/
-            ./build/test-results/
-            ./resources/screenshots/
+            ./build/reports
+            ./build/test-results
+            ./resources/screenshots
 
 
   FireFoxTest:
@@ -60,8 +60,8 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
-          name: uploading...
+          name: selenium-allianz-ff-test-results
           path: |
-            ./build/reports/
-            ./build/test-results/
-            ./resources/screenshots/
+            ./build/reports
+            ./build/test-results
+            ./resources/screenshots
