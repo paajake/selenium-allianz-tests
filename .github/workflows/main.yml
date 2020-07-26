@@ -46,3 +46,11 @@ jobs:
         run: ./gradlew compileTest --info
       - name: Run Tests with Gradle
         run: ./gradlew test --info -Dbrowser=firefox # Run our tests using Gradle
+      - name: Upload Report Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: uploading...
+          path: |
+            ./build/reports/
+            ./build/test-results/
+            ./resources/screenshots/
