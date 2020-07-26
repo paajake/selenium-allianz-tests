@@ -25,6 +25,16 @@ jobs:
         run: ./gradlew compileTest --info
       - name: Run Tests with Gradle
         run: ./gradlew test --info -Dbrowser=chrome # Run our tests using Gradle
+      - name: Upload Report Artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: uploading...
+          path: |
+            ./build/reports/
+            ./build/test-results/
+            ./resources/screenshots/
+
 
   FireFoxTest:
     runs-on: ubuntu-latest # Using linux machine
@@ -47,6 +57,7 @@ jobs:
       - name: Run Tests with Gradle
         run: ./gradlew test --info -Dbrowser=firefox # Run our tests using Gradle
       - name: Upload Report Artifacts
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: uploading...
