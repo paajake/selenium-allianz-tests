@@ -3,6 +3,8 @@ package base;
 import com.github.javafaker.Faker;
 import com.google.common.io.Files;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -39,10 +41,9 @@ public class BaseTest {
 
     @BeforeClass
     protected void setUp(){
-//        BasicConfigurator.configure();
+        setupLogger();
 
         String browser = System.getProperty("browser");
-
         if ("firefox".equals(browser)) {
             setUpFirefox();
         } else {
@@ -78,5 +79,11 @@ public class BaseTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setupLogger(){
+        Logger logger = Logger.getLogger("TestsLogger");
+        logger.setLevel(Level.INFO);
+        BasicConfigurator.configure();
     }
 }
