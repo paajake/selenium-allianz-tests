@@ -82,8 +82,10 @@ public class BaseTest {
     }
 
     private void setupLogger(){
-        Logger logger = Logger.getLogger("TestsLogger");
-        logger.setLevel(Level.INFO);
+        Logger.getRootLogger().setLevel(Level.INFO);
+//        Logger logger = Logger.getLogger("TestsLogger");
+//        logger.setLevel(Level.INFO);
         BasicConfigurator.configure();
+
     }
 }
