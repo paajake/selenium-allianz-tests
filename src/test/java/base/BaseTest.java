@@ -39,7 +39,7 @@ public class BaseTest {
 
     @BeforeClass
     protected void setUp(){
-        BasicConfigurator.configure();
+//        BasicConfigurator.configure();
 
         String browser = System.getProperty("browser");
 

@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class HomePage {
     private final WebDriver driver;
     private static HomePage instance = null;
-    private String[] zipCodes = {"97074", "97491", "97488", "28195", "28197", "28199", "28201", "28203", "28205",
+    private final String[] zipCodes = {"97074", "97491", "97488", "28195", "28197", "28199", "28201", "28203", "28205",
             "27568", "27570", "27572", "27574", "27576", "27578", "27580"};
     private final By privacyCookiesAcceptButton = By.className("optanon-button-allow");
     private final By birthDateField = By.cssSelector("input[formcontrolname='birthdate']");

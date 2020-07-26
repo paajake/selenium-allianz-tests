@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest # Using linux machine
     strategy:
       matrix:
-        java: [ 8, 9, 11]
+        java: [ 8, 9, 10, 11]
     name: Chrome & Java ${{ matrix.java }}
     steps:
       - uses: actions/checkout@v2 # Checkout the code
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest # Using linux machine
     strategy:
       matrix:
-        java: [ 8, 9, 11]
+        java: [ 8, 9, 10, 11]
     name: Firefox & Java ${{ matrix.java }}
     steps:
       - uses: actions/checkout@v2 # Checkout the code
