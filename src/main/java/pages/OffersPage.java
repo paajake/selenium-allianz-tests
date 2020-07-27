@@ -31,6 +31,7 @@ public class OffersPage {
     }
 
     private void clickDropDownField(By dropdownField) {
+        waitForElementToBeClickable(dropdownField);
         driver.findElement(dropdownField).click();
     }
 
