@@ -41,6 +41,7 @@ public class HomePage {
     }
 
     public void setBirthDateField(String birthDate) {
+        waitForElementToBeClickable(birthDateField);
         driver.findElement(birthDateField).sendKeys(birthDate);
     }
 
@@ -78,14 +79,17 @@ public class HomePage {
     }
 
     public OffersPage clickCalculateTariffButton() {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(calculateTariffButton)));
-
+        waitForElementToBeClickable(calculateTariffButton);
         driver.findElement(calculateTariffButton).click();
         return new OffersPage(driver);
     }
 
     public String getZipCode(int index) {
         return zipCodes[index];
+    }
+
+    protected void waitForElementToBeClickable(By elementIdentifier) {
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(elementIdentifier)));
     }
 }
