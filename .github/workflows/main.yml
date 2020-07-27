@@ -6,6 +6,7 @@ jobs:
   ChromeTest:
     runs-on: ubuntu-latest # Using linux machine
     strategy:
+      fail-fast: false
       matrix:
         java: [ 8, 9, 10, 11]
     name: Chrome & Java ${{ matrix.java }}
