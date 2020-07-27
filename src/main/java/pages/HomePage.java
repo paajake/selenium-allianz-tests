@@ -9,8 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 public class HomePage {
-    private final WebDriver driver;
     private static HomePage instance = null;
+    private final WebDriver driver;
     private final String[] zipCodes = {"97074", "97491", "97488", "28195", "28197", "28199", "28201", "28203", "28205",
             "27568", "27570", "27572", "27574", "27576", "27578", "27580"};
     private final By privacyCookiesAcceptButton = By.className("optanon-button-allow");
@@ -20,19 +20,19 @@ public class HomePage {
     private final By habitationDropdownField = By.cssSelector("nx-dropdown[formcontrolname='inhabited']");
     private final By calculateTariffButton = By.cssSelector("button[nxbutton='emphasis']");
 
-    private HomePage(WebDriver driver){
+    private HomePage(WebDriver driver) {
         this.driver = driver;
         clickPrivacyCookiesAcceptButton();
     }
 
     public static HomePage getInstance(WebDriver driver) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new HomePage(driver);
         }
         return instance;
     }
 
-    private void clickPrivacyCookiesAcceptButton(){
+    private void clickPrivacyCookiesAcceptButton() {
         driver.findElement(privacyCookiesAcceptButton).click();
 
         WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -40,44 +40,44 @@ public class HomePage {
 
     }
 
-    public void setBirthDateField(String birthDate){
+    public void setBirthDateField(String birthDate) {
         driver.findElement(birthDateField).sendKeys(birthDate);
     }
 
-    public void setHouseSizeField(String size){
+    public void setHouseSizeField(String size) {
         driver.findElement(houseSizeField).sendKeys(size);
     }
 
-    public void setZipCodeField(String zip){
+    public void setZipCodeField(String zip) {
         driver.findElement(zipCodeField).sendKeys(zip);
     }
 
-    private WebElement findHabitationDropdownElement(){
-          return driver.findElement(By.className("nx-dropdown__panel-body"));
+    private WebElement findHabitationDropdownElement() {
+        return driver.findElement(By.className("nx-dropdown__panel-body"));
     }
 
-    private void clickHabitationDropdownField (){
-         driver.findElement(habitationDropdownField).click();
+    private void clickHabitationDropdownField() {
+        driver.findElement(habitationDropdownField).click();
     }
 
-    private String clickHabitationItemByIndex(int index){
+    private String clickHabitationItemByIndex(int index) {
         List<WebElement> dropDownElements = findHabitationDropdownElement()
-                                            .findElements(By.cssSelector("nx-dropdown-item[role='option']"));
+                .findElements(By.cssSelector("nx-dropdown-item[role='option']"));
 
         dropDownElements.get(index).click();
         return getSelectedHabitationOptionText();
     }
 
-    public String setHabitationDropdownField(int habitationStatus){
+    public String setHabitationDropdownField(int habitationStatus) {
         clickHabitationDropdownField();
-        return  clickHabitationItemByIndex(habitationStatus);
+        return clickHabitationItemByIndex(habitationStatus);
     }
 
-    public String getSelectedHabitationOptionText(){
+    public String getSelectedHabitationOptionText() {
         return driver.findElement(By.cssSelector("nx-dropdown span.ng-star-inserted")).getText();
     }
 
-    public OffersPage clickCalculateTariffButton(){
+    public OffersPage clickCalculateTariffButton() {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(calculateTariffButton)));
 
@@ -85,7 +85,7 @@ public class HomePage {
         return new OffersPage(driver);
     }
 
-    public String getZipCode(int index){
+    public String getZipCode(int index) {
         return zipCodes[index];
     }
 }

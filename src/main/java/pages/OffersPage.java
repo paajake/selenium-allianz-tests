@@ -1,10 +1,6 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.*;
 
 import java.util.List;
 
@@ -14,15 +10,33 @@ public class OffersPage {
     private final By insuredSumField = By.cssSelector("input[name='coverage']");
     private final By paymentFrequencyDropdownField = By.cssSelector("nx-dropdown[name='payment_schedule']");
     private final By deductibleDropdownField = By.cssSelector("nx-dropdown[name='retention']");
+    private final By contractDurationDropdownField = By.cssSelector("nx-dropdown[name='contract_term']");
+    private final By fahrradPlusDropdownField =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[1]/nx-card/div/div[2]/nx-formfield/div/div/div/div");
+    private final By fahrradPlusButton =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[1]/nx-card/div/div[3]/button");
+    private final By fensterPlusButton =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[2]/nx-card/div/div[3]/button");
+    private final By houseProtectionButton =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[3]/nx-card/div/div[3]/button");
+    private final By internetProtectionButton =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[4]/nx-card/div/div[3]/button");
+    private final By continueApplicationButton =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/module-basket/nxt-confirmation-layout/div/div[3]/div/nxt-confirmation-layout-footer/button[1]");
 
-    private void clickDropDownField(By dropdownField){
+    public OffersPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    private void clickDropDownField(By dropdownField) {
         driver.findElement(dropdownField).click();
     }
-    private WebElement findDropdownListElement(){
+
+    private WebElement findDropdownListElement() {
         return driver.findElement(By.className("nx-dropdown__panel-body"));
     }
 
-    private String clickDropDownItemByIndex(int dropdownElementIndex, By dropdownField){
+    private String clickDropDownItemByIndex(int dropdownElementIndex, By dropdownField) {
         List<WebElement> dropDownElements = findDropdownListElement()
                 .findElements(By.cssSelector("nx-dropdown-item[role='option']"));
 
@@ -30,32 +44,68 @@ public class OffersPage {
         return getSelectedDropDownOptionText(dropdownField);
     }
 
-    private String getSelectedDropDownOptionText(By dropdownField){
+    private String getSelectedDropDownOptionText(By dropdownField) {
         return driver.findElement(dropdownField)
                 .findElement(By.cssSelector("nx-dropdown span.ng-star-inserted")).getText();
     }
 
-    public OffersPage(WebDriver driver){
-        this.driver = driver;
-    }
-
-    public String getHeadlineText(){
+    public String getHeadlineText() {
         return driver.findElement(pageHeadline).getText();
     }
 
-    public String setPaymentFrequencyDropdownField(int paymentFrequency){
+    public String setPaymentFrequencyDropdownField(int paymentFrequencyDropdownOption) {
         clickDropDownField(paymentFrequencyDropdownField);
-        return  clickDropDownItemByIndex(paymentFrequency, paymentFrequencyDropdownField);
+        return clickDropDownItemByIndex(paymentFrequencyDropdownOption, paymentFrequencyDropdownField);
     }
 
-    public String setDeductibleDropdownField(int deductible){
+    public String setDeductibleDropdownField(int deductibleDropdownOption) {
         clickDropDownField(deductibleDropdownField);
-        return  clickDropDownItemByIndex(deductible, deductibleDropdownField);
+        return clickDropDownItemByIndex(deductibleDropdownOption, deductibleDropdownField);
     }
 
-    public void setInsuredSumField(String insuredSum){
+    public String setContractDurationDropdownField(int durationDropdownOption) {
+        clickDropDownField(contractDurationDropdownField);
+        return clickDropDownItemByIndex(durationDropdownOption, contractDurationDropdownField);
+    }
+
+    public void setInsuredSumField(String insuredSum) {
         driver.findElement(insuredSumField).sendKeys(Keys.HOME, Keys.chord(Keys.SHIFT, Keys.END), insuredSum);
     }
 
+    public void clickInsurancePlan(int insurancePlanIndex) {
+        List<WebElement> tableRowElements = driver.findElements(By.cssSelector("div.c-comparison-table__leftcolumn"));
+        String script = "arguments[0].scrollIntoView();";
+        ((JavascriptExecutor) driver).executeScript(script, tableRowElements.get(3));
 
+
+        List<WebElement> insurancePlanOptions = driver.
+                findElements(By.cssSelector("nxt-comparison-table-row.table-footer button"));
+        insurancePlanOptions.get(insurancePlanIndex).click();
+    }
+
+    public void clickFahrradPlusButton() {
+        driver.findElement(fahrradPlusButton).click();
+    }
+
+    public String setFahrradPlusDropdownField(int fahrradPlusDropdown) {
+        clickDropDownField(fahrradPlusDropdownField);
+        return clickDropDownItemByIndex(fahrradPlusDropdown, fahrradPlusDropdownField);
+    }
+
+    public void clickFensterPlusButton() {
+        driver.findElement(fensterPlusButton).click();
+    }
+
+    public void clickHouseProtectionButton() {
+        driver.findElement(houseProtectionButton).click();
+    }
+
+    public void clickInternetProtectionButton() {
+        driver.findElement(internetProtectionButton).click();
+    }
+
+    public FileApplicationPage clickContinueApplicationButton(){
+        driver.findElement(continueApplicationButton).click();
+        return new FileApplicationPage(driver);
+    }
 }

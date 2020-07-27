@@ -3,6 +3,7 @@ package base;
 import com.github.javafaker.Faker;
 import com.google.common.io.Files;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
@@ -13,21 +14,23 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.ITestResult;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import pages.HomePage;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import org.apache.log4j.BasicConfigurator;
 
 public class BaseTest {
-    private WebDriver driver;
     protected HomePage homePage;
     protected Faker faker = new Faker(new Locale("de"));
+    private WebDriver driver;
 
-    private void setUpFirefox(){
+    private void setUpFirefox() {
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions().addArguments("--headless");
         driver = new FirefoxDriver(options);
@@ -40,7 +43,7 @@ public class BaseTest {
     }
 
     @BeforeClass
-    protected void setUp(){
+    protected void setUp() {
         setupLogger();
 
         String browser = System.getProperty("browser");
@@ -55,40 +58,42 @@ public class BaseTest {
     }
 
     @AfterClass
-    protected void tearDown(){ driver.quit(); }
+    protected void tearDown() {
+        driver.quit();
+    }
 
     @BeforeMethod
-    protected void goToHome(){
+    protected void goToHome() {
         driver.get("https://hausrat.allianz.de/");
         homePage = HomePage.getInstance(driver);
     }
 
     @AfterMethod
-    protected void captureFailure(ITestResult result){
-        if(ITestResult.FAILURE == result.getStatus()){
+    protected void captureFailure(ITestResult result) {
+        if (ITestResult.FAILURE == result.getStatus()) {
             takeScreenshot(result.getName());
         }
     }
 
-    protected void takeScreenshot(String name){
-        TakesScreenshot camera = (TakesScreenshot)driver;
+    protected void takeScreenshot(String name) {
+        TakesScreenshot camera = (TakesScreenshot) driver;
         File screenshot = camera.getScreenshotAs(OutputType.FILE);
 
         try {
-            Files.move(screenshot, new File("resources/screenshots/"+ name + ".png"));
+            Files.move(screenshot, new File("resources/screenshots/" + name + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    protected String getCurrentUrl(){
+
+    protected String getCurrentUrl() {
         return driver.getCurrentUrl();
     }
 
-    private void setupLogger(){
+    private void setupLogger() {
         Logger.getRootLogger().setLevel(Level.INFO);
 //        Logger logger = Logger.getLogger("TestsLogger");
 //        logger.setLevel(Level.INFO);
         BasicConfigurator.configure();
-
     }
 }
