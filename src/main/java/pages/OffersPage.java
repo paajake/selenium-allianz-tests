@@ -77,7 +77,7 @@ public class OffersPage {
     public void clickInsurancePlan(int insurancePlanIndex) {
         List<WebElement> tableRowElements = driver.findElements(By.cssSelector("div.c-comparison-table__leftcolumn"));
         String script = "arguments[0].scrollIntoView();";
-        ((JavascriptExecutor) driver).executeScript(script, tableRowElements.get(3));
+        ((JavascriptExecutor) driver).executeScript(script, tableRowElements.get(4));
 
 
         List<WebElement> insurancePlanOptions = driver.
