@@ -2,8 +2,6 @@ package tariffs;
 
 import base.BaseTest;
 import base.RetryAnalyzer;
-import base.RetryTestListener;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.FileApplicationPage;
 import pages.OffersPage;
@@ -12,8 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.testng.Assert.assertEquals;
-
-@Listeners(RetryTestListener.class)
 
 public class TariffCalculationTests extends BaseTest {
 
