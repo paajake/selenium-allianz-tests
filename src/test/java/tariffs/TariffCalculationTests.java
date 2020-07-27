@@ -26,7 +26,7 @@ public class TariffCalculationTests extends BaseTest {
         String zipCode = homePage.getZipCode(faker.number().numberBetween(0, 14));
         homePage.setZipCodeField(zipCode);
 
-        homePage.setHabitationDropdownField(faker.number().numberBetween(0, 1));
+//        homePage.setHabitationDropdownField(faker.number().numberBetween(0, 1));
 
         OffersPage offersPage = homePage.clickCalculateTariffButton();
         assertEquals(getCurrentUrl(), "https://hausrat.allianz.de/rechner/angebot");
