@@ -1,6 +1,8 @@
 package pages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
@@ -88,24 +90,34 @@ public class OffersPage {
     }
 
     public String setFahrradPlusDropdownField(int fahrradPlusDropdown) {
+        waitForElementToBeClickable(fahrradPlusButton);
         clickDropDownField(fahrradPlusDropdownField);
         return clickDropDownItemByIndex(fahrradPlusDropdown, fahrradPlusDropdownField);
     }
 
     public void clickFensterPlusButton() {
+        waitForElementToBeClickable(fensterPlusButton);
         driver.findElement(fensterPlusButton).click();
     }
 
     public void clickHouseProtectionButton() {
+        waitForElementToBeClickable(houseProtectionButton);
         driver.findElement(houseProtectionButton).click();
     }
 
     public void clickInternetProtectionButton() {
+        waitForElementToBeClickable(internetProtectionButton);
         driver.findElement(internetProtectionButton).click();
     }
 
-    public FileApplicationPage clickContinueApplicationButton(){
+    public FileApplicationPage clickContinueApplicationButton() {
+        waitForElementToBeClickable(continueApplicationButton);
         driver.findElement(continueApplicationButton).click();
         return new FileApplicationPage(driver);
+    }
+
+    private void waitForElementToBeClickable(By elementIdentifier) {
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(elementIdentifier)));
     }
 }
