@@ -1,6 +1,9 @@
 package tariffs;
 
 import base.BaseTest;
+import base.RetryAnalyzer;
+import base.RetryTestListener;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.FileApplicationPage;
 import pages.OffersPage;
@@ -10,9 +13,12 @@ import java.util.Date;
 
 import static org.testng.Assert.assertEquals;
 
+@Listeners(RetryTestListener.class)
 
 public class TariffCalculationTests extends BaseTest {
-    @Test
+
+    @Test(retryAnalyzer= RetryAnalyzer.class)
+
     public void testTariffCalculator() {
         Date dateOfBirth = faker.date().birthday(18, 50);
         SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");

@@ -13,6 +13,7 @@ public class OffersPage {
     private final By paymentFrequencyDropdownField = By.cssSelector("nx-dropdown[name='payment_schedule']");
     private final By deductibleDropdownField = By.cssSelector("nx-dropdown[name='retention']");
     private final By contractDurationDropdownField = By.cssSelector("nx-dropdown[name='contract_term']");
+    private final By dropdownList = By.className("nx-dropdown__panel-body");
     private final By fahrradPlusDropdownField =
             By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[1]/nx-card/div/div[2]/nx-formfield/div/div/div/div");
     private final By fahrradPlusButton =
@@ -36,7 +37,8 @@ public class OffersPage {
     }
 
     private WebElement findDropdownListElement() {
-        return driver.findElement(By.className("nx-dropdown__panel-body"));
+        waitForElementToBeClickable(dropdownList);
+        return driver.findElement(dropdownList);
     }
 
     private String clickDropDownItemByIndex(int dropdownElementIndex, By dropdownField) {
