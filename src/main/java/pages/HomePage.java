@@ -46,10 +46,12 @@ public class HomePage {
     }
 
     public void setHouseSizeField(String size) {
+        waitForElementToBeClickable(houseSizeField);
         driver.findElement(houseSizeField).sendKeys(size);
     }
 
     public void setZipCodeField(String zip) {
+        waitForElementToBeClickable(zipCodeField);
         driver.findElement(zipCodeField).sendKeys(zip);
     }
 
@@ -58,6 +60,7 @@ public class HomePage {
     }
 
     private void clickHabitationDropdownField() {
+        waitForElementToBeClickable(habitationDropdownField);
         driver.findElement(habitationDropdownField).click();
     }
 
