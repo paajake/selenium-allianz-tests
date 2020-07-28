@@ -8,14 +8,15 @@ import pages.OffersPage;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static org.testng.Assert.assertEquals;
 
 public class TariffCalculationTests extends BaseTest {
 
-    @Test(retryAnalyzer= RetryAnalyzer.class)
 
-    public void testTariffCalculator() {
+
+    private OffersPage fillHomePageDetails() {
         Date dateOfBirth = faker.date().birthday(18, 50);
         SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
 
@@ -30,25 +31,75 @@ public class TariffCalculationTests extends BaseTest {
 
 //        homePage.setHabitationDropdownField(faker.number().numberBetween(0, 1));
 
-        OffersPage offersPage = homePage.clickCalculateTariffButton();
-        assertEquals(getCurrentUrl(), "https://hausrat.allianz.de/rechner/angebot");
-        assertEquals(offersPage.getHeadlineText(), "Unser Angebot für Sie");
+        return homePage.clickCalculateTariffButton();
 
+
+    }
+
+    private void assertIsOffersPage(OffersPage offersPage){
+        assertEquals(offersPage.getCurrentUrl(), "https://hausrat.allianz.de/rechner/angebot");
+        assertEquals(offersPage.getHeadlineText(), "Unser Angebot für Sie");
+    }
+
+    private void assertIsFileApplicationPage(FileApplicationPage fileApplicationPage){
+        assertEquals(fileApplicationPage.getCurrentUrl(), "https://hausrat.allianz.de/rechner/antrag");
+        assertEquals(fileApplicationPage.getHeadlineText(), "Fast geschafft!");
+    }
+
+    private void updateOffer(OffersPage offersPage){
         offersPage.setPaymentFrequencyDropdownField(faker.number().numberBetween(0, 3));
         offersPage.setDeductibleDropdownField(faker.number().numberBetween(1, 3));
         offersPage.setContractDurationDropdownField(faker.number().numberBetween(0,1));
+    }
 
-        offersPage.clickInsurancePlan(faker.number().numberBetween(0,2));
-
+    private void addOfferAddons(OffersPage offersPage){
         offersPage.setFahrradPlusDropdownField(faker.number().numberBetween(0,3));
         offersPage.clickFahrradPlusButton();
         offersPage.clickFensterPlusButton();
         offersPage.clickHouseProtectionButton();
         offersPage.clickInternetProtectionButton();
+    }
+
+
+    @Test(retryAnalyzer= RetryAnalyzer.class)
+    public void testBasicPlan(){
+        OffersPage offersPage = fillHomePageDetails();
+        assertIsOffersPage(offersPage);
+        updateOffer(offersPage);
+
+        offersPage.clickInsurancePlan(0);
+        addOfferAddons(offersPage);
 
         FileApplicationPage fileApplicationPage = offersPage.clickContinueApplicationButton();
-        assertEquals(getCurrentUrl(), "https://hausrat.allianz.de/rechner/antrag");
-        assertEquals(fileApplicationPage.getHeadlineText(), "Fast geschafft!");
+        assertIsFileApplicationPage(fileApplicationPage);
+        System.out.println("vierteljährlich".toUpperCase(Locale.GERMAN));
+    }
 
+    @Test(retryAnalyzer= RetryAnalyzer.class)
+    public void testPlusPlan(){
+        OffersPage offersPage = fillHomePageDetails();
+        assertIsOffersPage(offersPage);
+        updateOffer(offersPage);
+
+        offersPage.clickInsurancePlan(1);
+        addOfferAddons(offersPage);
+
+        FileApplicationPage fileApplicationPage = offersPage.clickContinueApplicationButton();
+        assertIsFileApplicationPage(fileApplicationPage);
+        System.out.println("vierteljährlich".toUpperCase(Locale.GERMAN));
+    }
+
+    @Test(retryAnalyzer= RetryAnalyzer.class)
+    public void testBestPlan(){
+        OffersPage offersPage = fillHomePageDetails();
+        assertIsOffersPage(offersPage);
+        updateOffer(offersPage);
+
+        offersPage.clickInsurancePlan(2);
+        addOfferAddons(offersPage);
+
+        FileApplicationPage fileApplicationPage = offersPage.clickContinueApplicationButton();
+        assertIsFileApplicationPage(fileApplicationPage);
+        System.out.println("vierteljährlich".toUpperCase(Locale.GERMAN));
     }
 }

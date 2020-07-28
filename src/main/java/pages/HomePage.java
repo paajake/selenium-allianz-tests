@@ -8,9 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class HomePage {
+public class HomePage extends BasePage {
     private static HomePage instance = null;
-    private final WebDriver driver;
     private final String[] zipCodes = {"97074", "97491", "97488", "28195", "28197", "28199", "28201", "28203", "28205",
             "27568", "27570", "27572", "27574", "27576", "27578", "27580"};
     private final By privacyCookiesAcceptButton = By.className("optanon-button-allow");
@@ -21,7 +20,7 @@ public class HomePage {
     private final By calculateTariffButton = By.cssSelector("button[nxbutton='emphasis']");
 
     private HomePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         clickPrivacyCookiesAcceptButton();
     }
 

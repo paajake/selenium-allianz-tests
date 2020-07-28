@@ -6,8 +6,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class OffersPage {
-    private final WebDriver driver;
+public class OffersPage extends BasePage {
     private final By pageHeadline = By.className("nx-heading--page");
     private final By insuredSumField = By.cssSelector("input[name='coverage']");
     private final By paymentFrequencyDropdownField = By.cssSelector("nx-dropdown[name='payment_schedule']");
@@ -28,7 +27,7 @@ public class OffersPage {
             By.xpath("//*[@id=\"app\"]/page-offer/div/module-basket/nxt-confirmation-layout/div/div[3]/div/nxt-confirmation-layout-footer/button[1]");
 
     public OffersPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     private void clickDropDownField(By dropdownField) {
@@ -80,7 +79,7 @@ public class OffersPage {
     public void clickInsurancePlan(int insurancePlanIndex) {
         List<WebElement> tableRowElements = driver.findElements(By.cssSelector("div.c-comparison-table__leftcolumn"));
         String script = "arguments[0].scrollIntoView();";
-        ((JavascriptExecutor) driver).executeScript(script, tableRowElements.get(4));
+        ((JavascriptExecutor) driver).executeScript(script, tableRowElements.get(5));
 
 
         List<WebElement> insurancePlanOptions = driver.

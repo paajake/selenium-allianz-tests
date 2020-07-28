@@ -85,10 +85,6 @@ public class BaseTest {
         }
     }
 
-    protected String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
-
     private void setupLogger() {
         Logger.getRootLogger().setLevel(Level.INFO);
 //        Logger logger = Logger.getLogger("TestsLogger");
