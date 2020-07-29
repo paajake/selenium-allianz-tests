@@ -120,5 +120,37 @@ public class TariffCalculationTests extends BaseTest {
         assertFileApplicationPagePreFilledData(fileApplicationPage);
     }
 
+    @Test(retryAnalyzer = RetryAnalyzer.class)
+    public void testPlusPlan() {
+        OffersPage offersPage = fillHomePageDetails();
+        assertIsOffersPage(offersPage);
+
+        updateOffer(offersPage);
+        offersPage.clickInsurancePlan(1);
+        addOfferAddons(offersPage);
+
+        assertUpdatedOffer(offersPage, 1);
+
+        FileApplicationPage fileApplicationPage = offersPage.clickContinueApplicationButton();
+        assertIsFileApplicationPage(fileApplicationPage);
+        assertFileApplicationPagePreFilledData(fileApplicationPage);
+    }
+
+    @Test(retryAnalyzer = RetryAnalyzer.class)
+    public void testBestPlan() {
+        OffersPage offersPage = fillHomePageDetails();
+        assertIsOffersPage(offersPage);
+
+        updateOffer(offersPage);
+        offersPage.clickInsurancePlan(2);
+        addOfferAddons(offersPage);
+
+        assertUpdatedOffer(offersPage, 2);
+
+        FileApplicationPage fileApplicationPage = offersPage.clickContinueApplicationButton();
+        assertIsFileApplicationPage(fileApplicationPage);
+        assertFileApplicationPagePreFilledData(fileApplicationPage);
+    }
+
 
 }
