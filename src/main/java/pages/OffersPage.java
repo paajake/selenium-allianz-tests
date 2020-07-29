@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class OffersPage extends BasePage {
@@ -12,6 +13,7 @@ public class OffersPage extends BasePage {
     private final By paymentFrequencyDropdownField = By.cssSelector("nx-dropdown[name='payment_schedule']");
     private final By deductibleDropdownField = By.cssSelector("nx-dropdown[name='retention']");
     private final By contractDurationDropdownField = By.cssSelector("nx-dropdown[name='contract_term']");
+    private final By planCards = By.tagName("nxt-comparison-table-header-cell");
     private final By dropdownList = By.className("nx-dropdown__panel-body");
     private final By fahrradPlusDropdownField =
             By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[1]/nx-card/div/div[2]/nx-formfield/div/div/div/div");
@@ -25,6 +27,8 @@ public class OffersPage extends BasePage {
             By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[4]/nx-card/div/div[3]/button");
     private final By continueApplicationButton =
             By.xpath("//*[@id=\"app\"]/page-offer/div/module-basket/nxt-confirmation-layout/div/div[3]/div/nxt-confirmation-layout-footer/button[1]");
+private final By deductibleTextInSummary =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/module-basket/nxt-confirmation-layout/div/div[2]/div/div/div[1]/div/div[1]/p");
 
     public OffersPage(WebDriver driver) {
         super(driver);
@@ -59,12 +63,45 @@ public class OffersPage extends BasePage {
 
     public String setPaymentFrequencyDropdownField(int paymentFrequencyDropdownOption) {
         clickDropDownField(paymentFrequencyDropdownField);
-        return clickDropDownItemByIndex(paymentFrequencyDropdownOption, paymentFrequencyDropdownField);
+        String paymentFrequency = clickDropDownItemByIndex(paymentFrequencyDropdownOption, paymentFrequencyDropdownField);
+        return getPaymentFrequencyTestText(paymentFrequency);
+    }
+
+    private String getPaymentFrequencyTestText(String PaymentFrequency){
+        HashMap<String, String> paymentFrequencies = new HashMap<String, String>();
+
+        paymentFrequencies.put("monatlich","Monat");
+        paymentFrequencies.put("vierteljährlich","Quartal");
+        paymentFrequencies.put("halbjährlich","Halbjahr");
+        paymentFrequencies.put("jährlich","Jahr");
+
+        return paymentFrequencies.get(PaymentFrequency);
+    }
+
+    public String getPlanCardText(int planIndex){
+        waitForElementToBeClickable(By.cssSelector(planCards.toString().split(" ")[1] +" p"));
+        return driver.findElements(planCards).get(planIndex).findElement(By.tagName("p")).getText();
+    }
+
+    public String getDeductibleInSummaryText(){
+        waitForElementToBeClickable(deductibleTextInSummary);
+        return driver.findElement(deductibleTextInSummary).getText();
     }
 
     public String setDeductibleDropdownField(int deductibleDropdownOption) {
         clickDropDownField(deductibleDropdownField);
-        return clickDropDownItemByIndex(deductibleDropdownOption, deductibleDropdownField);
+        String deductible = clickDropDownItemByIndex(deductibleDropdownOption, deductibleDropdownField);
+        return getDeductibleTestText(deductible);
+    }
+
+    private String getDeductibleTestText(String deductible){
+        HashMap<String, String> deductibles = new HashMap<String, String>();
+
+        deductibles.put("150 €","150");
+        deductibles.put("300 €","300");
+        deductibles.put("500 €","500");
+
+        return deductibles.get(deductible);
     }
 
     public String setContractDurationDropdownField(int durationDropdownOption) {
@@ -76,11 +113,16 @@ public class OffersPage extends BasePage {
         driver.findElement(insuredSumField).sendKeys(Keys.HOME, Keys.chord(Keys.SHIFT, Keys.END), insuredSum);
     }
 
+    public String getInsuredSumField() {
+        return driver.findElement(insuredSumField).getText();
+    }
+
     public void clickInsurancePlan(int insurancePlanIndex) {
         List<WebElement> tableRowElements = driver.findElements(By.cssSelector("div.c-comparison-table__leftcolumn"));
         String script = "arguments[0].scrollIntoView();";
         ((JavascriptExecutor) driver).executeScript(script, tableRowElements.get(5));
 
+        waitForElementToBeClickable(By.cssSelector("nxt-comparison-table-row.table-footer button"));
 
         List<WebElement> insurancePlanOptions = driver.
                 findElements(By.cssSelector("nxt-comparison-table-row.table-footer button"));

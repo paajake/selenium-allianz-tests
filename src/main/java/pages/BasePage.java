@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class BasePage {
     protected final WebDriver driver;
 
-    public HashMap<String, String> filledData;
+    public static HashMap<String, String> setTestFields = new HashMap<>();
     public String getCurrentUrl() {
         return driver.getCurrentUrl();
     }
