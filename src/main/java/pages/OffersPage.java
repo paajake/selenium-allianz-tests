@@ -4,8 +4,12 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class OffersPage extends BasePage {
     private final By pageHeadline = By.className("nx-heading--page");
@@ -15,16 +19,27 @@ public class OffersPage extends BasePage {
     private final By contractDurationDropdownField = By.cssSelector("nx-dropdown[name='contract_term']");
     private final By planCards = By.tagName("nxt-comparison-table-header-cell");
     private final By dropdownList = By.className("nx-dropdown__panel-body");
+    private final By totalTextInNavigation = By.cssSelector("div[nxttoolbarright]");
+    private final By totalTextInSummary =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/module-basket/nxt-confirmation-layout/div/div[3]/div/nxt-confirmation-layout-footer/div/div/div/h3");
     private final By fahrradPlusDropdownField =
             By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[1]/nx-card/div/div[2]/nx-formfield/div/div/div/div");
     private final By fahrradPlusButton =
             By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[1]/nx-card/div/div[3]/button");
+    private final By fahrradPlusAmountText =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[1]/nx-card/div/div[3]/h3");
     private final By fensterPlusButton =
             By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[2]/nx-card/div/div[3]/button");
+    private final By fensterPlusAmountText =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[2]/nx-card/div/div[3]/h3");
     private final By houseProtectionButton =
             By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[3]/nx-card/div/div[3]/button");
+    private final By houseProtectionAmountText =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[3]/nx-card/div/div[3]/h3");
     private final By internetProtectionButton =
             By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[4]/nx-card/div/div[3]/button");
+    private final By internetProtectionAmountText =
+            By.xpath("//*[@id=\"app\"]/page-offer/div/div[2]/div/module-options/div/div/nxt-option-card[4]/nx-card/div/div[3]/h3");
     private final By continueApplicationButton =
             By.xpath("//*[@id=\"app\"]/page-offer/div/module-basket/nxt-confirmation-layout/div/div[3]/div/nxt-confirmation-layout-footer/button[1]");
 private final By deductibleTextInSummary =
@@ -32,6 +47,7 @@ private final By deductibleTextInSummary =
 
     public OffersPage(WebDriver driver) {
         super(driver);
+        setTestFields.put("total", "0,00");
     }
 
     private void clickDropDownField(By dropdownField) {
@@ -83,6 +99,17 @@ private final By deductibleTextInSummary =
         return driver.findElements(planCards).get(planIndex).findElement(By.tagName("p")).getText();
     }
 
+    public String getTotalFromSummary(){
+        waitForElementToBeClickable(totalTextInSummary);
+        return driver.findElement(totalTextInSummary).getText();
+    }
+
+    public String getTotalFromNavigation(){
+        waitForElementToBeClickable(totalTextInNavigation);
+        return driver.findElement(totalTextInNavigation).getText();
+    }
+
+
     public String getDeductibleInSummaryText(){
         waitForElementToBeClickable(deductibleTextInSummary);
         return driver.findElement(deductibleTextInSummary).getText();
@@ -114,7 +141,7 @@ private final By deductibleTextInSummary =
     }
 
     public String getInsuredSumField() {
-        return driver.findElement(insuredSumField).getText();
+        return driver.findElement(insuredSumField).getAttribute("value");
     }
 
     public void clickInsurancePlan(int insurancePlanIndex) {
@@ -127,10 +154,14 @@ private final By deductibleTextInSummary =
         List<WebElement> insurancePlanOptions = driver.
                 findElements(By.cssSelector("nxt-comparison-table-row.table-footer button"));
         insurancePlanOptions.get(insurancePlanIndex).click();
-    }
 
-    public void clickFahrradPlusButton() {
-        driver.findElement(fahrradPlusButton).click();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        appendToTotal(getPlanCardText(insurancePlanIndex));
     }
 
     public String setFahrradPlusDropdownField(int fahrradPlusDropdown) {
@@ -139,19 +170,36 @@ private final By deductibleTextInSummary =
         return clickDropDownItemByIndex(fahrradPlusDropdown, fahrradPlusDropdownField);
     }
 
+    public void clickFahrradPlusButton() {
+        driver.findElement(fahrradPlusButton).click();
+        waitForElementToBeClickable(fahrradPlusAmountText);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        appendToTotal(driver.findElement(fahrradPlusAmountText).getText());
+    }
+
     public void clickFensterPlusButton() {
         waitForElementToBeClickable(fensterPlusButton);
         driver.findElement(fensterPlusButton).click();
+        waitForElementToBeClickable(fensterPlusButton);
+        appendToTotal(driver.findElement(fensterPlusAmountText).getText());
     }
 
     public void clickHouseProtectionButton() {
         waitForElementToBeClickable(houseProtectionButton);
         driver.findElement(houseProtectionButton).click();
+        waitForElementToBeClickable(houseProtectionButton);
+        appendToTotal(driver.findElement(houseProtectionAmountText).getText());
     }
 
     public void clickInternetProtectionButton() {
         waitForElementToBeClickable(internetProtectionButton);
         driver.findElement(internetProtectionButton).click();
+        waitForElementToBeClickable(internetProtectionButton);
+        appendToTotal(driver.findElement(internetProtectionAmountText).getText());
     }
 
     public FileApplicationPage clickContinueApplicationButton() {
@@ -160,8 +208,16 @@ private final By deductibleTextInSummary =
         return new FileApplicationPage(driver);
     }
 
-    private void waitForElementToBeClickable(By elementIdentifier) {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(elementIdentifier)));
+    private void appendToTotal(String text){
+        String amount = text.split("\\s+")[0];
+
+        String totalText = setTestFields.get("total");
+        try {
+            BigDecimal total = parse(totalText, Locale.GERMAN).add(parse(amount, Locale.GERMAN));
+            String updatedTotalText = NumberFormat.getNumberInstance(Locale.GERMAN).format(total);
+            setTestFields.put("total",updatedTotalText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

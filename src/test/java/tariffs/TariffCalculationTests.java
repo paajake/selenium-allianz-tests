@@ -19,17 +19,18 @@ public class TariffCalculationTests extends BaseTest {
 
     private OffersPage fillHomePageDetails() {
         Date dateOfBirth = faker.date().birthday(18, 50);
-        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 
         String strDate = formatter.format(dateOfBirth);
         homePage.setBirthDateField(strDate);
+        BasePage.setTestFields.put("birthDate",strDate);
 
         String size = String.valueOf(faker.number().numberBetween(10, 200));
-
         homePage.setHouseSizeField(size);
 
         String zipCode = homePage.getZipCode(faker.number().numberBetween(0, 14));
         homePage.setZipCodeField(zipCode);
+        BasePage.setTestFields.put("zipCode",zipCode);
 
 //        homePage.setHabitationDropdownField(faker.number().numberBetween(0, 1));
 
@@ -44,8 +45,8 @@ public class TariffCalculationTests extends BaseTest {
     }
 
     private void assertUpdatedOffer(OffersPage offersPage, int InsurancePlanIndex) {
-        assertTotal(offersPage);
         assertPeriodDetails(offersPage, InsurancePlanIndex);
+        assertTotal(offersPage);
     }
 
     private void assertPeriodDetails(OffersPage offersPage, int InsurancePlanIndex){
@@ -57,13 +58,31 @@ public class TariffCalculationTests extends BaseTest {
                         .contains(BasePage.setTestFields.get("deductible")),
                 "Deductible Text is Incorrect");
     }
+
+    private void assertTotal(OffersPage offersPage){
+        assertTrue(offersPage.getTotalFromSummary()
+                        .contains(BasePage.setTestFields.get("total")),
+                "Total Text is Incorrect");
+
+        assertTrue(offersPage.getTotalFromNavigation()
+                .contains(BasePage.setTestFields.get("total")),
+        "Total Text is Incorrect");
+    }
+
     private void assertIsFileApplicationPage(FileApplicationPage fileApplicationPage) {
         assertEquals(fileApplicationPage.getCurrentUrl(), "https://hausrat.allianz.de/rechner/antrag");
         assertEquals(fileApplicationPage.getHeadlineText(), "Fast geschafft!");
     }
+    private void assertFileApplicationPagePreFilledData(FileApplicationPage fileApplicationPage){
+        assertTrue(fileApplicationPage.getTotalFromNavigation()
+                        .contains(BasePage.setTestFields.get("total")),
+                "Total Text is Incorrect");
 
-    private void assertTotal(OffersPage offersPage){
+        assertEquals(fileApplicationPage.getBirthDateText(), BasePage.setTestFields.get("birthDate"),
+                "Birth Date Incorrect");
 
+        assertEquals(fileApplicationPage.getZipCodeText(), BasePage.setTestFields.get("zipCode"),
+                "Zip Code Incorrect");
     }
 
     private void updateOffer(OffersPage offersPage) {
@@ -98,6 +117,8 @@ public class TariffCalculationTests extends BaseTest {
 
         FileApplicationPage fileApplicationPage = offersPage.clickContinueApplicationButton();
         assertIsFileApplicationPage(fileApplicationPage);
+        assertFileApplicationPagePreFilledData(fileApplicationPage);
     }
+
 
 }
