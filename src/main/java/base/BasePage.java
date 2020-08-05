@@ -1,7 +1,9 @@
-package pages;
+package base;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -32,8 +34,8 @@ public class BasePage {
         return (BigDecimal) format.parse(amount.replaceAll("[^\\d.,]",""));
     }
 
-    protected void waitForElementToBeClickable(By elementIdentifier) {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(elementIdentifier)));
+    protected void waitForElementToBeClickable(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 }

@@ -3,13 +3,12 @@ package tariffs;
 import base.BaseTest;
 import base.RetryAnalyzer;
 import org.testng.annotations.Test;
-import pages.BasePage;
+import base.BasePage;
 import pages.FileApplicationPage;
 import pages.OffersPage;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
