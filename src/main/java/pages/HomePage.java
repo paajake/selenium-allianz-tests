@@ -16,40 +16,31 @@ public class HomePage extends BasePage {
     private final String[] zipCodes = {"97074", "97491", "97488", "28195", "28197", "28199", "28201", "28203", "28205",
             "27568", "27570", "27572", "27574", "27576", "27578", "27580"};
 
-//    private final By privacyCookiesAcceptButton = By.className("optanon-button-allow");
-    @FindBy(how = How.CLASS_NAME, using = "optanon-button-allow")
-    private WebElement privacyCookiesAcceptButton;
+    private final By privacyCookiesAcceptButton = By.className("optanon-button-allow");
 
-//    private final By birthDateField = By.cssSelector("input[formcontrolname='birthdate']");
     @FindBy(how = How.CSS, using = "input[formcontrolname='birthdate']")
     private WebElement birthDateField;
 
-//    private final By houseSizeField = By.cssSelector("input[formcontrolname='size']");
     @FindBy(how = How.CSS, using = "input[formcontrolname='size']")
     private WebElement houseSizeField;
 
-//    private final By zipCodeField = By.cssSelector("input[formcontrolname='zip']");
     @FindBy(how = How.CSS, using = "input[formcontrolname='zip']")
     private WebElement zipCodeField;
 
-//    private final By habitationDropdownField = By.cssSelector("nx-dropdown[formcontrolname='inhabited']");
     @FindBy(how = How.CSS, using = "nx-dropdown[formcontrolname='inhabited']")
     private WebElement habitationDropdownField;
 
-//    private final By calculateTariffButton = By.cssSelector("button[nxbutton='emphasis']");
     @FindBy(how = How.CSS, using = "button[nxbutton='emphasis']")
     private WebElement calculateTariffButton;
 
     @FindBy(how = How.CSS, using = "nx-dropdown span.ng-star-inserted")
     private WebElement selectedHabitationOption;
 
-//    @FindBy(how = How.CSS, using = "nx-dropdown__panel-body")
-//    private WebElement habitationDropdownElement;
 
     private HomePage(WebDriver driver) {
         super(driver);
         clickPrivacyCookiesAcceptButton();
-        PageFactory.initElements(new VisibleAjaxElementFactory(driver, 5), this);
+        PageFactory.initElements(new VisibleAjaxElementFactory(driver, 10), this);
     }
 
     public static HomePage getInstance(WebDriver driver) {
@@ -60,25 +51,18 @@ public class HomePage extends BasePage {
     }
 
     private void clickPrivacyCookiesAcceptButton() {
-        privacyCookiesAcceptButton.click();
-
-//        WebDriverWait wait = new WebDriverWait(driver, 5);
-//        wait.until(ExpectedConditions.visibilityOf(birthDateField));
-
+        driver.findElement(privacyCookiesAcceptButton).click();
     }
 
     public void setBirthDateField(String birthDate) {
-//        waitForElementToBeClickable(birthDateField);
         birthDateField.sendKeys(birthDate);
     }
 
     public void setHouseSizeField(String size) {
-//        waitForElementToBeClickable(houseSizeField);
         houseSizeField.sendKeys(size);
     }
 
     public void setZipCodeField(String zip) {
-//        waitForElementToBeClickable(zipCodeField);
         zipCodeField.sendKeys(zip);
     }
 
@@ -87,7 +71,6 @@ public class HomePage extends BasePage {
     }
 
     private void clickHabitationDropdownField() {
-//        waitForElementToBeClickable(habitationDropdownField);
         habitationDropdownField.click();
     }
 
@@ -109,7 +92,6 @@ public class HomePage extends BasePage {
     }
 
     public OffersPage clickCalculateTariffButton() {
-//        waitForElementToBeClickable(calculateTariffButton);
         calculateTariffButton.click();
         return new OffersPage(driver);
     }
