@@ -2,18 +2,26 @@ package pages;
 
 import base.BasePage;
 import base.VisibleAjaxElementFactory;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.*;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class OffersPage extends BasePage {
 
+    @CacheLookup
     @FindBy(how = How.CLASS_NAME, using = "nx-heading--page")
     private WebElement pageHeadline;
 
@@ -78,8 +86,11 @@ public class OffersPage extends BasePage {
     @FindBy(how = How.XPATH, using = "//*[@id=\"app\"]/page-offer/div/module-basket/nxt-confirmation-layout/div/div[2]/div/div/div[1]/div/div[1]/p")
     private WebElement deductibleTextInSummary;
 
-    private HashMap<String, String> paymentFrequencies = new HashMap<String, String>();
-    private HashMap<String, String> deductibles = new HashMap<String, String>();
+    @FindBy(how = How.XPATH, using = "//*[@id=\"app\"]/page-offer/div/module-basket/nxt-confirmation-layout/div/div[2]/div/div/div/div/div[1]/p")
+    private WebElement insuredSumTextInSummary;
+
+    private final HashMap<String, String> paymentFrequencies = new HashMap<String, String>();
+    private final HashMap<String, String> deductibles = new HashMap<String, String>();
 
     public OffersPage(WebDriver driver) {
         super(driver);
@@ -127,6 +138,7 @@ public class OffersPage extends BasePage {
     public String setPaymentFrequencyDropdownField(int paymentFrequencyDropdownOption) {
         paymentFrequencyDropdownField.click();
         String paymentFrequency = clickDropDownItemByIndex(paymentFrequencyDropdownOption, paymentFrequencyDropdownField);
+        waitTillPlansUpdate();
         return getPaymentFrequencyTestText(paymentFrequency);
     }
 
@@ -146,9 +158,12 @@ public class OffersPage extends BasePage {
         return totalTextInNavigation.getText();
     }
 
-
     public String getDeductibleInSummaryText(){
         return deductibleTextInSummary.getText();
+    }
+
+    public String getInsuredSumInSummaryText(){
+        return insuredSumTextInSummary.getText();
     }
 
     public String setDeductibleDropdownField(int deductibleDropdownOption) {
@@ -163,6 +178,7 @@ public class OffersPage extends BasePage {
 
     public String setContractDurationDropdownField(int durationDropdownOption) {
         contractDurationDropdownField.click();
+        waitTillPlansUpdate();
         return clickDropDownItemByIndex(durationDropdownOption, contractDurationDropdownField);
     }
 
@@ -170,7 +186,7 @@ public class OffersPage extends BasePage {
         insuredSumField.sendKeys(Keys.HOME, Keys.chord(Keys.SHIFT, Keys.END), insuredSum);
     }
 
-    public String getInsuredSumField() {
+    public String getInsuredSumFromField() {
         return insuredSumField.getAttribute("value");
     }
 
@@ -236,5 +252,23 @@ public class OffersPage extends BasePage {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    private void waitTillPlansUpdate(){
+        Duration timeOutInSeconds = Duration.ofSeconds(5);
+        Clock clock = Clock.systemDefaultZone();
+        Instant end = clock.instant().plus(timeOutInSeconds);
+
+        while(clock.instant().isBefore(end)){
+            try{
+                if (getPlanCardText(0).contains("€")){
+                    return;
+                }
+            } catch(StaleElementReferenceException | NoSuchElementException e){
+                Logger.getRootLogger().error(e.getMessage());
+            }
+        }
+
+        throw  new TimeoutException("Plans Update Timed Out!");
     }
 }

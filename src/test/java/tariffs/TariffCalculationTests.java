@@ -15,7 +15,6 @@ import static org.testng.Assert.assertTrue;
 
 public class TariffCalculationTests extends BaseTest {
 
-
     private OffersPage fillHomePageDetails() {
         Date dateOfBirth = faker.date().birthday(18, 50);
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
@@ -56,6 +55,10 @@ public class TariffCalculationTests extends BaseTest {
         assertTrue(offersPage.getDeductibleInSummaryText()
                         .contains(BasePage.setTestFields.get("deductible")),
                 "Deductible Text is Incorrect");
+
+        assertTrue(offersPage.getInsuredSumInSummaryText()
+                        .contains(offersPage.getInsuredSumFromField()),
+                "Insured Sum Text is Incorrect");
     }
 
     private void assertTotal(OffersPage offersPage){
@@ -72,6 +75,7 @@ public class TariffCalculationTests extends BaseTest {
         assertEquals(fileApplicationPage.getCurrentUrl(), "https://hausrat.allianz.de/rechner/antrag");
         assertEquals(fileApplicationPage.getHeadlineText(), "Fast geschafft!");
     }
+
     private void assertFileApplicationPagePreFilledData(FileApplicationPage fileApplicationPage){
         assertTrue(fileApplicationPage.getTotalFromNavigation()
                         .contains(BasePage.setTestFields.get("total")),
@@ -94,11 +98,24 @@ public class TariffCalculationTests extends BaseTest {
         offersPage.setContractDurationDropdownField(faker.number().numberBetween(0, 1));
     }
 
-    private void addOfferAddons(OffersPage offersPage) {
+    private void addAddonsForBestPlan(OffersPage offersPage) {
         offersPage.setFahrradPlusDropdownField(faker.number().numberBetween(0, 3));
         offersPage.clickFahrradPlusButton();
         offersPage.clickFensterPlusButton();
         offersPage.clickHouseProtectionButton();
+        offersPage.clickInternetProtectionButton();
+    }
+
+    private void addAddonsForPlusPlan(OffersPage offersPage) {
+        offersPage.setFahrradPlusDropdownField(faker.number().numberBetween(0, 3));
+        offersPage.clickFahrradPlusButton();
+        offersPage.clickHouseProtectionButton();
+        offersPage.clickInternetProtectionButton();
+    }
+
+    private void addAddonsForBasicPlan(OffersPage offersPage) {
+        offersPage.setFahrradPlusDropdownField(faker.number().numberBetween(0, 3));
+        offersPage.clickFahrradPlusButton();
         offersPage.clickInternetProtectionButton();
     }
 
@@ -110,7 +127,7 @@ public class TariffCalculationTests extends BaseTest {
 
         updateOffer(offersPage);
         offersPage.clickInsurancePlan(0);
-        addOfferAddons(offersPage);
+        addAddonsForBasicPlan(offersPage);
 
         assertUpdatedOffer(offersPage, 0);
 
@@ -126,7 +143,7 @@ public class TariffCalculationTests extends BaseTest {
 
         updateOffer(offersPage);
         offersPage.clickInsurancePlan(1);
-        addOfferAddons(offersPage);
+        addAddonsForPlusPlan(offersPage);
 
         assertUpdatedOffer(offersPage, 1);
 
@@ -142,7 +159,7 @@ public class TariffCalculationTests extends BaseTest {
 
         updateOffer(offersPage);
         offersPage.clickInsurancePlan(2);
-        addOfferAddons(offersPage);
+        addAddonsForBestPlan(offersPage);
 
         assertUpdatedOffer(offersPage, 2);
 
@@ -150,6 +167,5 @@ public class TariffCalculationTests extends BaseTest {
         assertIsFileApplicationPage(fileApplicationPage);
         assertFileApplicationPagePreFilledData(fileApplicationPage);
     }
-
 
 }

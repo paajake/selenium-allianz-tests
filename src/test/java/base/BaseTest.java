@@ -55,7 +55,7 @@ public class BaseTest {
 
         driver.manage().window().setSize(new Dimension(1024,768));
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+//        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
     @AfterClass

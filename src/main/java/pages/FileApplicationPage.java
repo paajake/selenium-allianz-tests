@@ -4,12 +4,13 @@ import base.BasePage;
 import base.VisibleAjaxElementFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 public class FileApplicationPage extends BasePage {
-
+    @CacheLookup
     @FindBy(how = How.CLASS_NAME, using = "nx-heading--page")
     private WebElement pageHeadline;
 

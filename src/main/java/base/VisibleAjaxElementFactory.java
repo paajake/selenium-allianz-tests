@@ -32,7 +32,7 @@ public class VisibleAjaxElementFactory implements ElementLocatorFactory {
             if(element==null){
                 return false;
             }
-            return element.isDisplayed()&& element.isEnabled();
+            return element.isDisplayed() && element.isEnabled();
         }
     }
 }
