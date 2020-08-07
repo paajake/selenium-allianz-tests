@@ -21,7 +21,6 @@ import pages.HomePage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 @Listeners(RetryTestListener.class)
 
@@ -33,6 +32,7 @@ public class BaseTest {
     private void setUpFirefox() {
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions().addArguments("--headless");
+        options.setBinary("/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox");
         driver = new FirefoxDriver(options);
     }
 
@@ -47,15 +47,13 @@ public class BaseTest {
         setupLogger();
 
         String browser = System.getProperty("browser");
+
         if ("firefox".equals(browser)) {
             setUpFirefox();
         } else {
             setUpChrome();
         }
-
         driver.manage().window().setSize(new Dimension(1024,768));
-        driver.manage().window().maximize();
-//        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
     @AfterClass
@@ -76,6 +74,7 @@ public class BaseTest {
         }
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     protected void takeScreenshot(String name) {
         TakesScreenshot camera = (TakesScreenshot) driver;
         File screenshot = camera.getScreenshotAs(OutputType.FILE);

@@ -33,8 +33,6 @@ public class TariffCalculationTests extends BaseTest {
 //        homePage.setHabitationDropdownField(faker.number().numberBetween(0, 1));
 
         return homePage.clickCalculateTariffButton();
-
-
     }
 
     private void assertIsOffersPage(OffersPage offersPage) {

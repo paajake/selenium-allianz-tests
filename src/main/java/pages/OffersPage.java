@@ -89,8 +89,8 @@ public class OffersPage extends BasePage {
     @FindBy(how = How.XPATH, using = "//*[@id=\"app\"]/page-offer/div/module-basket/nxt-confirmation-layout/div/div[2]/div/div/div/div/div[1]/p")
     private WebElement insuredSumTextInSummary;
 
-    private final HashMap<String, String> paymentFrequencies = new HashMap<String, String>();
-    private final HashMap<String, String> deductibles = new HashMap<String, String>();
+    private final HashMap<String, String> paymentFrequencies = new HashMap<>();
+    private final HashMap<String, String> deductibles = new HashMap<>();
 
     public OffersPage(WebDriver driver) {
         super(driver);
@@ -124,6 +124,7 @@ public class OffersPage extends BasePage {
                 .findElements(By.cssSelector("nx-dropdown-item[role='option']"));
 
         dropDownElements.get(dropdownElementIndex).click();
+        waitTillPlansUpdate();
         return getSelectedDropDownOptionText(dropdownField);
     }
 
@@ -197,12 +198,6 @@ public class OffersPage extends BasePage {
 
         insurancePlanOptions.get(insurancePlanIndex).click();
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         appendToTotal(getPlanCardText(insurancePlanIndex));
     }
 
@@ -213,11 +208,6 @@ public class OffersPage extends BasePage {
 
     public void clickFahrradPlusButton() {
         fahrradPlusButton.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         appendToTotal(fahrradPlusAmountText.getText());
     }
 
