@@ -32,7 +32,6 @@ public class BaseTest {
     private void setUpFirefox() {
         WebDriverManager.firefoxdriver().setup();
         FirefoxOptions options = new FirefoxOptions().addArguments("--headless");
-        options.setBinary("/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox");
         driver = new FirefoxDriver(options);
     }
 
