@@ -29,6 +29,7 @@ public class TariffCalculationTests extends BaseTest {
         String zipCode = homePage.getZipCode(faker.number().numberBetween(0, 14));
         homePage.setZipCodeField(zipCode);
         BasePage.setTestFields.put("zipCode",zipCode);
+        BasePage.setTestFields.put("city",homePage.getCity(zipCode));
 
 //        homePage.setHabitationDropdownField(faker.number().numberBetween(0, 1));
 
@@ -84,6 +85,9 @@ public class TariffCalculationTests extends BaseTest {
 
         assertEquals(fileApplicationPage.getZipCodeText(), BasePage.setTestFields.get("zipCode"),
                 "Zip Code Incorrect");
+
+        assertEquals(fileApplicationPage.getCityText(), BasePage.setTestFields.get("city"),
+                "City Incorrect");
     }
 
     private void updateOffer(OffersPage offersPage) {

@@ -47,7 +47,7 @@ public class BaseTest {
 
         String browser = System.getProperty("browser");
 
-        if ("firefox".equals(browser)) {
+        if ("firefox".equalsIgnoreCase(browser)) {
             setUpFirefox();
         } else {
             setUpChrome();

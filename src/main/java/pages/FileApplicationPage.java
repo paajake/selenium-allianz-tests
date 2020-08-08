@@ -23,6 +23,9 @@ public class FileApplicationPage extends BasePage {
     @FindBy(how = How.CSS, using = "input[formcontrolname='zipcode']")
     private WebElement zipCodeField;
 
+    @FindBy(how = How.CSS, using = "input[formcontrolname='city']")
+    private WebElement cityField;
+
     public FileApplicationPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(new VisibleAjaxElementFactory(driver, 10), this);
@@ -42,6 +45,10 @@ public class FileApplicationPage extends BasePage {
 
     public String getZipCodeText(){
         return zipCodeField.getAttribute("value");
+    }
+
+    public String getCityText(){
+        return cityField.getAttribute("value");
     }
 
 }

@@ -9,12 +9,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class HomePage extends BasePage {
     private static HomePage instance = null;
-    private final String[] zipCodes = {"97074", "97491", "97488", "28195", "28197", "28199", "28201", "28203", "28205",
-            "27568", "27570", "27572", "27574", "27576", "27578", "27580"};
+    private final HashMap<String, String> zipcodes = new HashMap<>();
 
     private final By privacyCookiesAcceptButton = By.className("optanon-button-allow");
 
@@ -39,6 +39,7 @@ public class HomePage extends BasePage {
 
     private HomePage(WebDriver driver) {
         super(driver);
+        setzipcodes();
         clickPrivacyCookiesAcceptButton();
         PageFactory.initElements(new VisibleAjaxElementFactory(driver, 10), this);
     }
@@ -95,8 +96,29 @@ public class HomePage extends BasePage {
         calculateTariffButton.click();
         return new OffersPage(driver);
     }
+    private void setzipcodes(){
+        zipcodes.put("97074", "Würzburg");
+        zipcodes.put("97491", "Aidhausen");
+        zipcodes.put("97488", "Stadtlauringen");
+        zipcodes.put("28195", "Bremen");
+        zipcodes.put("28197", "Bremen");
+        zipcodes.put("28199", "Bremen");
+        zipcodes.put("28201", "Bremen");
+        zipcodes.put("28203", "Bremen");
+        zipcodes.put("27568", "Bremerhaven");
+        zipcodes.put("27570", "Bremerhaven");
+        zipcodes.put("27572", "Bremerhaven");
+        zipcodes.put("27574", "Bremerhaven");
+        zipcodes.put("27576", "Bremerhaven");
+        zipcodes.put("27578", "Bremerhaven");
+        zipcodes.put("27580", "Bremerhaven");
+    }
 
     public String getZipCode(int index) {
-        return zipCodes[index];
+        return (String) zipcodes.keySet().toArray()[index];
+    }
+    
+    public String getCity(String zipcode){
+        return zipcodes.get(zipcode);
     }
 }
