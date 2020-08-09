@@ -11,10 +11,11 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomePage extends BasePage {
     private static HomePage instance = null;
-    private final HashMap<String, String> zipcodes = new HashMap<>();
+    private final Map<String, String> zipcodes = new HashMap<>();
 
     private final By privacyCookiesAcceptButton = By.className("optanon-button-allow");
 

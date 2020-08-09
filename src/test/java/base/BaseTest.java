@@ -24,7 +24,7 @@ import java.util.Locale;
 
 @Listeners(RetryTestListener.class)
 
-public class BaseTest {
+public abstract class BaseTest {
     protected HomePage homePage;
     protected Faker faker = new Faker(new Locale("de"));
     private WebDriver driver;

@@ -11,11 +11,12 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
-public class BasePage {
+public abstract class BasePage {
     protected final WebDriver driver;
 
-    public static HashMap<String, String> setTestFields = new HashMap<>();
+    public static Map<String, String> setTestFields = new HashMap<>();
     public String getCurrentUrl() {
         return driver.getCurrentUrl();
     }
