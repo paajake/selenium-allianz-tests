@@ -28,16 +28,17 @@ public abstract class BaseTest {
     protected HomePage homePage;
     protected Faker faker = new Faker(new Locale("de"));
     private WebDriver driver;
+    private final String[] webDriverOptionsArgs = {"--headless"};
 
     private void setUpFirefox() {
         WebDriverManager.firefoxdriver().setup();
-        FirefoxOptions options = new FirefoxOptions().addArguments("--headless");
+        FirefoxOptions options = new FirefoxOptions().addArguments(webDriverOptionsArgs);
         driver = new FirefoxDriver(options);
     }
 
     private void setUpChrome() {
         WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions().addArguments("--headless");
+        ChromeOptions options = new ChromeOptions().addArguments(webDriverOptionsArgs);
         driver = new ChromeDriver(options);
     }
 
@@ -87,8 +88,6 @@ public abstract class BaseTest {
 
     private void setupLogger() {
         Logger.getRootLogger().setLevel(Level.INFO);
-//        Logger logger = Logger.getLogger("TestsLogger");
-//        logger.setLevel(Level.INFO);
         BasicConfigurator.configure();
     }
 }
